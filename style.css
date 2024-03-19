@@ -41,7 +41,6 @@ body{
     }
     &:focus{
         animation: wiggle 0.5s;
-        background-color:firebrick;
     }
 }
 
