@@ -51,21 +51,6 @@ function pomodoroTimer(timer, pause){
         }
     }, 1000);
 
-    // letEndSequence = false;
-    // btnStop.addEventListener("click", function(){
-    //     clearInterval(pomodoroRotation);
-    //     counter = 1000;
-    //     roundCounter = 0;
-    //     pomodoro.removeAttribute("style");
-    //     btnStart.removeAttribute("disabled");
-    //     letEndSequence = true;
-    //     console.log(pomodoro, counter, roundCounter, letEndSequence);
-    // })
-
-    // if (letEndSequence){
-    //     return;
-    // }
-
     roundCounter++;
     if (roundCounter < rounds) {
         setTimeout(pomodoroTimer, (timerMilliSec + pauseMilliSec), timer, pause);
