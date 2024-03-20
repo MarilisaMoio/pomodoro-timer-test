@@ -42,6 +42,9 @@ body{
     &:focus{
         animation: wiggle 0.5s;
     }
+    &:disabled{
+        background-color:firebrick;
+    }
 }
 
 @keyframes wiggle {
