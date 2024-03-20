@@ -20,7 +20,7 @@ function pomodoroTimer(timer, pause){
     const pauseStart = new Audio('sound/ding.mp3');
     const timerStart = new Audio('sound/ping.mp3');
     const timerEnd = new Audio('sound/noice.mp3');
-    //variables 
+    //variables
     const timerMilliSec = minuteToMilliSec(timer);
     const pauseMilliSec = minuteToMilliSec(pause);
     const rounds = 4;
@@ -49,14 +49,23 @@ function pomodoroTimer(timer, pause){
                 timerStart.play();
             }, pauseMilliSec)
         }
-        btnStop.addEventListener("click", function(){
-            clearInterval(pomodoroRotation);
-            btnStart.removeAttribute("disabled");
-            counter = 1000;
-            roundCounter = 0;
-            pomodoro.removeAttribute("style");
-        })
     }, 1000);
+
+    // letEndSequence = false;
+    // btnStop.addEventListener("click", function(){
+    //     clearInterval(pomodoroRotation);
+    //     counter = 1000;
+    //     roundCounter = 0;
+    //     pomodoro.removeAttribute("style");
+    //     btnStart.removeAttribute("disabled");
+    //     letEndSequence = true;
+    //     console.log(pomodoro, counter, roundCounter, letEndSequence);
+    // })
+
+    // if (letEndSequence){
+    //     return;
+    // }
+
     roundCounter++;
     if (roundCounter < rounds) {
         setTimeout(pomodoroTimer, (timerMilliSec + pauseMilliSec), timer, pause);
