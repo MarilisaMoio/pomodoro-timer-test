@@ -15,7 +15,7 @@ btnStart.addEventListener("click", function(){
 //main function, based on two int (the "working time" and the pause, both in minutes)
 function pomodoroTimer(timer, pause){
     // some delay, allowing the full animation on btn
-    setTimeout(() => btnStart.setAttribute("disabled", "disabled"), 500)
+    setTimeout(() => btnStart.setAttribute("disabled", "disabled"), 500);
     //sounds
     const pauseStart = new Audio('sound/ding.mp3');
     const timerStart = new Audio('sound/ping.mp3');
@@ -23,7 +23,7 @@ function pomodoroTimer(timer, pause){
     //variables 
     const timerMilliSec = minuteToMilliSec(timer);
     const pauseMilliSec = minuteToMilliSec(pause);
-    const rounds = 2
+    const rounds = 4;
     let counter = 1000;
     let ratio = 360 / timerMilliSec;
 
@@ -45,7 +45,7 @@ function pomodoroTimer(timer, pause){
             counter = 1000;
             pomodoro.style.filter = "hue-rotate(90deg)"
             setTimeout(function(){
-                pomodoro.removeAttribute("style")
+                pomodoro.removeAttribute("style");
                 timerStart.play();
             }, pauseMilliSec)
         }
@@ -59,11 +59,11 @@ function pomodoroTimer(timer, pause){
     }, 1000);
     roundCounter++;
     if (roundCounter < rounds) {
-        setTimeout(pomodoroTimer, (timerMilliSec + pauseMilliSec), timer, pause)
+        setTimeout(pomodoroTimer, (timerMilliSec + pauseMilliSec), timer, pause);
     }
 }
 
 //lil function converting minutes in millisecs
 function minuteToMilliSec(number){
-    return (1000 * 60 * number)
+    return (1000 * 60 * number);
 }
