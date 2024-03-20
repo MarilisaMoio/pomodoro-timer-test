@@ -10,7 +10,7 @@ Basically, when the button "START" is pressed, it triggers 4 sets of timers cons
 If you want to see it in action, you can click [here](https://marilisamoio.github.io/pomodoro-timer-test/).
 
 ### Goals:
-- Get a grasp of how `setInterval()` and `setTimeout()` works ✅ <small>(kind of)</small>;
+- Get a grasp of how `setInterval()` and `setTimeout()` works ✅ <sub><sup>(kind of)</sup></sub>;
 - Create a basic Pomodoro Timer ✅;
 - Use the pomdoro img as a Timer Traker, rotating every second ✅;
 - Add sounds ✅;
@@ -18,6 +18,6 @@ If you want to see it in action, you can click [here](https://marilisamoio.githu
 - Add some phrases in the DOM signaling when the pause starts, when it ends, the number of sets etc;
 - Add a "pause" button;
 - Add a counter in the DOM showing how much time is left;
-- Add the possibility to let the user choose the working time and pause duration <small style="color: orange">⚠️ work in progress ⚠️</small>;
+- Add the possibility to let the user choose the working time and pause duration ! ⚠️ work in progress;
 - Divide the main function in smaller ones, if possible;
 - Add sort of a clock-face around the pomodoro, making more clear how much time is left.
