@@ -6,14 +6,22 @@ const pomodoro = document.querySelector("#pomodoro");
 let roundCounter = 0;
 
 btnStart.addEventListener("click", function(){
-    pomodoroTimer(0.5, 0.2);
+    //inputs
+    const workingTime = parseInt(document.querySelector("#working-time").value)
+    const pauseTime = parseInt(document.querySelector("#pause").value)
+    const howManyRounds = parseInt(document.querySelector("#rounds").value)
+
+
+    if(!isNaN(workingTime) && !isNaN(pauseTime) && !isNaN(howManyRounds)){
+        pomodoroTimer(workingTime, pauseTime, howManyRounds);
+    }
 });
 
 
 //FUNCTIONS
 
 //main function, based on two int (the "working time" and the pause, both in minutes)
-function pomodoroTimer(timer, pause){    
+function pomodoroTimer(timer, pause, rounds){    
     // some delay, allowing the full animation on btn
     setTimeout(() => btnStart.setAttribute("disabled", "disabled"), 500);
     //sounds
@@ -24,7 +32,6 @@ function pomodoroTimer(timer, pause){
     //variables
     const timerMilliSec = minuteToMilliSec(timer);
     const pauseMilliSec = minuteToMilliSec(pause);
-    const rounds = 4;
     let counter = 1000;
     let ratio = 360 / timerMilliSec;
 
@@ -56,7 +63,7 @@ function pomodoroTimer(timer, pause){
     roundCounter++;
     if (roundCounter < rounds) {
         //10 seconds buffer so it effectively ends the previous cicle before starting this one
-        setTimeout(pomodoroTimer, (timerMilliSec + pauseMilliSec + 10), timer, pause);
+        setTimeout(pomodoroTimer, (timerMilliSec + pauseMilliSec + 10), timer, pause, rounds);
     }
 }
 
