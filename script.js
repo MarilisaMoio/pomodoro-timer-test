@@ -10,17 +10,22 @@ let pomodoroRotation;
 let setRepetition;
 let setEndPause;
 
+//sounds
+const pauseStart = new Audio('sound/ding.mp3');
+const timerStart = new Audio('sound/ping.mp3');
+const timerEnd = new Audio('sound/noice.mp3');
+const tick = new Audio('sound/tick.mp3');
+
 btnStart.addEventListener("click", function(){
     //inputs
-    const workingTime = parseInt(document.querySelector("#working-time").value)
-    const pauseTime = parseInt(document.querySelector("#pause").value)
-    const howManyRounds = parseInt(document.querySelector("#rounds").value)
+    // const workingTime = parseInt(document.querySelector("#working-time").value)
+    // const pauseTime = parseInt(document.querySelector("#pause").value)
+    // const howManyRounds = parseInt(document.querySelector("#rounds").value)
 
     //debug values
-    // const workingTime = 10;
-    // const pauseTime = 5;
-    // const howManyRounds = 4;
-
+    const workingTime = 0.5;
+    const pauseTime = 0.2;
+    const howManyRounds = 4;
 
     if(!isNaN(workingTime) && !isNaN(pauseTime) && !isNaN(howManyRounds)){
         pomodoroTimer(workingTime, pauseTime, howManyRounds);
@@ -33,15 +38,18 @@ btnStart.addEventListener("click", function(){
 function pomodoroTimer(timer, pause, rounds){
     //some delay, allowing the full animation on btn
     setTimeout(() => btnStart.setAttribute("disabled", "disabled"), 500);
-    //sounds
-    const pauseStart = new Audio('sound/ding.mp3');
-    const timerStart = new Audio('sound/ping.mp3');
-    const timerEnd = new Audio('sound/noice.mp3');
-    const tick = new Audio('sound/tick.mp3');
+
     //variables
     const timerMilliSec = minuteToMilliSec(timer);
     const pauseMilliSec = minuteToMilliSec(pause);
     let ratio = 360 / timerMilliSec;
+
+    roundCounter++;
+
+    console.log(`inizio round ${roundCounter}`)
+    //console.time(`con pausa`)
+    //console.time("senza pausa")
+    console.time("forse fino alla fine?")
 
     //main part
     pomodoroRotation = setInterval(function(){
@@ -50,29 +58,33 @@ function pomodoroTimer(timer, pause, rounds){
         pomodoro.style.transform = `rotate(${rotation}deg)`;
         counter += 1000;
         if (counter === timerMilliSec + 1000 && roundCounter >= rounds){
-            (`senza pausa ${roundCounter - 1}`)
             timerEnd.play();
             clearInterval(pomodoroRotation);
             btnStart.removeAttribute("disabled");
+            pomodoro.removeAttribute("style");
             counter = 1000;
             roundCounter = 0;
-            pomodoro.removeAttribute("style");
+            console.timeEnd("forse fino alla fine?")
+            console.log(timerMilliSec, pauseMilliSec, timerMilliSec + pauseMilliSec)
         } else if (counter === timerMilliSec + 1000){
             setEndPause = setTimeout(function(){
                 pomodoro.removeAttribute("style");
                 timerStart.play();
+                //console.timeEnd("con pausa")
             }, pauseMilliSec - 10) //10ms to counter the variable execution time 
+            //console.timeEnd("senza pausa")
+            console.log(counter)
             pauseStart.play();
             clearInterval(pomodoroRotation)
             counter = 1000;
             pomodoro.style.filter = "hue-rotate(90deg)"
         }
     }, 1000);
-
-    roundCounter++;
+    
     if (roundCounter < rounds) {
         setRepetition = setTimeout(pomodoroTimer, (timerMilliSec + pauseMilliSec), timer, pause, rounds);
     }
+
 }
 
 //lil function converting minutes in millisecs
@@ -80,12 +92,3 @@ function minuteToMilliSec(number){
     return (1000 * 60 * number);
 }
 
-//btnStop.addEventListener("click", function(){
-//     clearInterval(pomodoroRotation);
-//     clearTimeout(setRepetition);
-//     clearTimeout(setEndPause);
-//     btnStart.removeAttribute("disabled");
-//     counter = 1000; 
-//     roundCounter = 0;
-//     pomodoro.removeAttribute("style");
-// })
