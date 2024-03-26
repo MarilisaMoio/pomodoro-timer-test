@@ -5,14 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomodoro timer</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="timer-container">
         <div id="input-group">
-            <input type="text" id="working-time" maxlength="2"> 
-            <input type="text" id="pause" maxlength="2"> 
-            <input type="text" id="rounds" maxlength="1">
+            <div>
+                <label for="working-time">Work</label>
+                <input type="text" id="working-time" maxlength="2">
+            </div>
+            <div>
+                <label for="pause">Break</label> 
+                <input type="text" id="pause" maxlength="2">
+            </div>
+            <div>
+                <label for="working-time">Rounds</label> 
+                <input type="text" id="rounds" maxlength="1">
+            </div>
         </div>
         <img src="img/cartoon-tomato-icon-png.webp" alt="pomodoro" id="pomodoro">
         <div id="button-group">

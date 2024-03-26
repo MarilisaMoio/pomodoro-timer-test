@@ -10,9 +10,17 @@ ul, ol {
     list-style: none;
 }
 /* #endregion RESET */
+:root{
+    --main-ligth-green: #adff2f;
+    --main-dark-green: #096a09;
+    --main-red: #ff0000;
+}
 
 body{
-    background-color: greenyellow;
+    background-color: var(--main-ligth-green);
+    font-family: "Sniglet", system-ui;
+    color: var(--main-dark-green);
+
 }
 
 #timer-container{    
@@ -29,16 +37,25 @@ body{
     display: flex;
     align-items: flex-start;
     justify-content: space-evenly;
-    & > input{
+    & > div{
+        width: 60px;
+    }
+    & input{
+        display: block;
+        margin: 0 auto;
         border-radius: 20px;
         height: 40px;
         width: 40px;
         padding: 10px;
         font-size: large;
-        background-color: red;
-        color: greenyellow;
+        background-color: var(--main-red);
+        color: var(--main-ligth-green);
         text-align: center;
-        box-shadow: inset 0px 0px 5px black;
+        box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+    }
+    & label{
+        text-align: center;
+        display: block;
     }
 }
 
@@ -46,19 +63,22 @@ body{
     margin: 0 auto;
     width: fit-content;
     & [id*="btn"]{
-        background-color: red;
+        font-family: inherit;
+        color: var(--main-ligth-green);
+        background-color: var(--main-dark-green);
         height: calc(20px + 1vw);
         width: calc(70px + 1vw);
         border-radius: 10px;
         box-shadow: 0px 1px 1px black;
         &:hover{
-            background-color:firebrick;
+            background-color: firebrick;
         }
         &:focus{
             animation: wiggle 0.5s;
         }
         &:disabled{
-            background-color:firebrick;
+            background-color: color-mix(in srgb, var(--main-dark-green) 70%, black 30%);
+            color: var(--main-dark-green);
         }
     }
 }

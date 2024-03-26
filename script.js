@@ -15,9 +15,6 @@ btnStart.addEventListener("click", function(){
     const workingTime = parseInt(document.querySelector("#working-time").value)
     const pauseTime = parseInt(document.querySelector("#pause").value)
     const howManyRounds = parseInt(document.querySelector("#rounds").value)
-    
-    //some delay, allowing the full animation on btn
-    setTimeout(() => btnStart.setAttribute("disabled", "disabled"), 500);
 
     //debug values
     // const workingTime = 10;
@@ -34,6 +31,8 @@ btnStart.addEventListener("click", function(){
 
 //main function, based on two int (the "working time" and the pause, both in minutes)
 function pomodoroTimer(timer, pause, rounds){
+    //some delay, allowing the full animation on btn
+    setTimeout(() => btnStart.setAttribute("disabled", "disabled"), 500);
     //sounds
     const pauseStart = new Audio('sound/ding.mp3');
     const timerStart = new Audio('sound/ping.mp3');
@@ -80,3 +79,13 @@ function pomodoroTimer(timer, pause, rounds){
 function minuteToMilliSec(number){
     return (1000 * 60 * number);
 }
+
+//btnStop.addEventListener("click", function(){
+//     clearInterval(pomodoroRotation);
+//     clearTimeout(setRepetition);
+//     clearTimeout(setEndPause);
+//     btnStart.removeAttribute("disabled");
+//     counter = 1000; 
+//     roundCounter = 0;
+//     pomodoro.removeAttribute("style");
+// })
