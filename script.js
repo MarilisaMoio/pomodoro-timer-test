@@ -69,7 +69,6 @@ function pomodoroTimer(timer, pause, rounds){
             setEndPause = setTimeout(function(){
                 pomodoro.removeAttribute("style");
                 timerStart.play();
-                console.timeEnd("Prova")
                 pomodoroTimer(timer, pause, rounds)
             }, pauseMilliSec - delay - 5) // read the readme file for more info on why " - delay - 5"
             pauseStart.play();
