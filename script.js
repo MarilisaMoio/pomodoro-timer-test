@@ -1,6 +1,12 @@
 //DOM elements
 const btnStart = document.querySelector("#start-btn");
 const btnStop = document.querySelector("#stop-btn");
+const btnReset = document.querySelector("#reset-btn");
+
+const workingTimeInput = document.querySelector("#working-time");
+const pauseInput = document.querySelector("#pause");
+const roundsInput = document.querySelector("#rounds");
+
 const pomodoro = document.querySelector("#pomodoro");
 
 //sounds
@@ -15,11 +21,21 @@ let counter = 1000;
 let pomodoroRotation;
 let setEndPause;
 
+//state needed to resume a stopped break
+let phase = "work"; // "work" | "pause"
+let pauseEnd = 0;
+let pauseRemaining = 0;
+
 btnStart.addEventListener("click", function(){
+    //disbale inputs while the timer is running
+    workingTimeInput.setAttribute("disabled", "disabled");
+    pauseInput.setAttribute("disabled", "disabled");
+    roundsInput.setAttribute("disabled", "disabled");
+
     //inputs
-    const workingTime = parseInt(document.querySelector("#working-time").value)
-    const pauseTime = parseInt(document.querySelector("#pause").value)
-    const howManyRounds = parseInt(document.querySelector("#rounds").value)
+    const workingTime = parseInt(workingTimeInput.value);
+    const pauseTime = parseInt(pauseInput.value);
+    const howManyRounds = parseInt(roundsInput.value);
 
     //debug values
     // const workingTime = 25;
@@ -27,13 +43,46 @@ btnStart.addEventListener("click", function(){
     // const howManyRounds = 4;
 
     if(!isNaN(workingTime) && !isNaN(pauseTime) && !isNaN(howManyRounds)){
-        pomodoroTimer(workingTime, pauseTime, howManyRounds);
+        if (phase === "pause"){
+            //resume the break from where it was stopped
+            startPause(workingTime, pauseTime, howManyRounds, pauseRemaining);
+        } else {
+            pomodoroTimer(workingTime, pauseTime, howManyRounds);
+        }
+    } else {
+        workingTimeInput.removeAttribute("disabled");
+        pauseInput.removeAttribute("disabled");
+        roundsInput.removeAttribute("disabled");
     }
 });
 
 btnStop.addEventListener("click", function(){
+    //some delay, allowing the full animation on btn
+    setTimeout(() => btnStop.setAttribute("disabled", "disabled"), 500);
+
     clearInterval(pomodoroRotation);
     clearTimeout(setEndPause)
+    if (phase === "pause"){
+        pauseRemaining = Math.max(pauseEnd - Date.now(), 0);
+    }
+    btnStart.removeAttribute("disabled");
+});
+
+btnReset.addEventListener("click", function(){
+    clearInterval(pomodoroRotation);
+    clearTimeout(setEndPause)
+    btnStart.removeAttribute("disabled");
+    btnStop.removeAttribute("disabled");
+    
+    pomodoro.removeAttribute("style");
+    counter = 1000;
+    roundCounter = 0;
+    phase = "work";
+    pauseRemaining = 0;
+
+    workingTimeInput.removeAttribute("disabled");
+    pauseInput.removeAttribute("disabled");
+    roundsInput.removeAttribute("disabled");
 });
 
 //FUNCTIONS
@@ -42,15 +91,18 @@ btnStop.addEventListener("click", function(){
 function pomodoroTimer(timer, pause, rounds){
     //some delay, allowing the full animation on btn
     setTimeout(() => btnStart.setAttribute("disabled", "disabled"), 500);
+    btnStop.removeAttribute("disabled");
 
     //variables
     const timerMilliSec = minuteToMilliSec(timer);
     const pauseMilliSec = minuteToMilliSec(pause);
     let ratio = 360 / timerMilliSec;
-    const timeReference = Date.now();
+    //if resuming a stopped round, shift the reference back by the time already elapsed
+    const timeReference = Date.now() - (counter - 1000);
 
     //main part
-    roundCounter++;
+    //count a new round only when starting fresh, not when resuming after stop
+    if (counter === 1000) roundCounter++;
 
     pomodoroRotation = setInterval(function(){
         tick.play();
@@ -65,18 +117,29 @@ function pomodoroTimer(timer, pause, rounds){
             counter = 1000;
             roundCounter = 0;
         } else if (counter === timerMilliSec + 1000){
-            delay = Math.abs(Math.ceil(Date.now()) - timeReference - timerMilliSec);
-            setEndPause = setTimeout(function(){
-                pomodoro.removeAttribute("style");
-                timerStart.play();
-                pomodoroTimer(timer, pause, rounds)
-            }, pauseMilliSec - delay - 5) // read the readme file for more info on why " - delay - 5"
+            const delay = Math.abs(Math.ceil(Date.now()) - timeReference - timerMilliSec);
             pauseStart.play();
             clearInterval(pomodoroRotation)
             counter = 1000;
-            pomodoro.style.filter = "hue-rotate(90deg)"
+            startPause(timer, pause, rounds, pauseMilliSec - delay - 5) // read the readme file for more info on why " - delay - 5"
         }
     }, 1000);
+}
+
+//starts (or resumes) the break, lasting "duration" millisecs
+function startPause(timer, pause, rounds, duration){
+    setTimeout(() => btnStart.setAttribute("disabled", "disabled"), 500);
+
+    phase = "pause";
+    pauseEnd = Date.now() + duration;
+    pomodoro.style.filter = "hue-rotate(90deg)";
+
+    setEndPause = setTimeout(function(){
+        phase = "work";
+        pomodoro.removeAttribute("style");
+        timerStart.play();
+        pomodoroTimer(timer, pause, rounds)
+    }, duration)
 }
 
 //lil function converting minutes in millisecs

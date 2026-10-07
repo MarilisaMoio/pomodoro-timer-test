@@ -11,13 +11,13 @@ ul, ol {
 }
 /* #endregion RESET */
 :root{
-    --main-ligth-green: #adff2f;
+    --main-light-green: #adff2f;
     --main-dark-green: #096a09;
     --main-red: #ff0000;
 }
 
 body{
-    background-color: var(--main-ligth-green);
+    background-color: var(--main-light-green);
     font-family: "Sniglet", system-ui;
     color: var(--main-dark-green);
 
@@ -30,6 +30,8 @@ body{
     transform: translate(-50%, -50%);
     & img{
         width: calc(200px + 10vw);
+        /* the rotated image's bounding box can overlap the buttons and steal clicks */
+        pointer-events: none;
     }
 }
 
@@ -49,7 +51,11 @@ body{
         padding: 10px;
         font-size: large;
         background-color: var(--main-red);
-        color: var(--main-ligth-green);
+        color: var(--main-light-green);
+        &:focus-visible{
+            outline: 3px solid var(--main-dark-green);
+            outline-offset: 2px;
+        }
         text-align: center;
         box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
     }
@@ -64,7 +70,7 @@ body{
     width: fit-content;
     & [id*="btn"]{
         font-family: inherit;
-        color: var(--main-ligth-green);
+        color: var(--main-light-green);
         background-color: var(--main-dark-green);
         height: calc(20px + 1vw);
         width: calc(70px + 1vw);
